@@ -1,0 +1,65 @@
+score = int(input("Enter your score: "))
+
+if score >= 90:
+    print("Grade: A")
+elif score >= 80:
+    print("Grade: B")
+elif score >= 70:
+    print("Grade: C")
+elif score >= 60:
+    print("Grade: D")
+else:
+    print("Grade: F")
+
+
+students = {
+    "Amit": "A",
+    "Riya": "B",
+    "Karan": "C"
+}
+
+while True:
+    print("\n1. Add Student")
+    print("2. Update Grade")
+    print("3. View All Students")
+    print("4. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        name = input("Enter student name: ")
+        grade = input("Enter grade: ")
+        students[name] = grade
+        print("Student added!")
+
+    elif choice == "2":
+        name = input("Enter student name to update: ")
+        if name in students:
+            grade = input("Enter new grade: ")
+            students[name] = grade
+            print("Grade updated!")
+        else:
+            print("Student not found.")
+
+    elif choice == "3":
+        print("\n--- Student Grades ---")
+        for name, grade in students.items():
+            print(f"{name}: {grade}")
+
+    elif choice == "4":
+        break
+
+    else:
+        print("Invalid choice, try again.")
+file = open("example.txt", "w")
+file.write("Hello! This is sample content written to the file.\n")
+file.write("Python file handling is easy!")
+file.close()
+
+print("Content written to example.txt")
+file = open("example.txt", "r")
+content = file.read()
+file.close()
+
+print("File Content:\n")
+print(content)
