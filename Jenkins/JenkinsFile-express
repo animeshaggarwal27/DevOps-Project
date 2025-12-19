@@ -1,0 +1,36 @@
+pipeline {
+  agent any
+  tools { nodejs 'Node20' } // Name matches the NodeJS tool you configured
+  environment {
+    APP_DIR = '/srv/express-app'
+  }
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+    stage('Install deps') {
+      steps {
+        sh '''
+          set -e
+          sudo mkdir -p ${APP_DIR}
+          sudo chown -R jenkins:jenkins ${APP_DIR}
+          rsync -a --delete ./ ${APP_DIR}/
+          cd ${APP_DIR}
+          npm ci
+        '''
+      }
+    }
+    stage('Restart pm2') {
+      steps {
+        sh '''
+          pm2 describe express >/dev/null 2>&1 && pm2 restart express || pm2 start npm --name express -- start
+          pm2 save
+        '''
+      }
+    }
+  }
+  post {
+    success { echo 'Express deployed ✅' }
+    failure { echo 'Express deploy failed ❌' }
+  }
+}
