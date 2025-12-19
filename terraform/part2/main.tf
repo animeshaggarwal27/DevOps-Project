@@ -13,3 +13,21 @@ resource "aws_instance" "express" {
   security_groups = [aws_security_group.express_sg.name]
   user_data = file("express_user_data.sh")
 }
+
+resource "aws_security_group" "flask_sg" {
+  ingress {
+    from_port = 5000
+    to_port   = 5000
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "express_sg" {
+  ingress {
+    from_port = 3000
+    to_port   = 3000
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
